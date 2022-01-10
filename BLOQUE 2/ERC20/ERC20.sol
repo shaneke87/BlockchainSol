@@ -21,6 +21,9 @@ interface IERC20 {
     //devuelve un valor booleano resultado de la ooperacion indicada
     function transfer(address recipient, uint amount) external returns(bool);
 
+    //devuelve un valor booleano resultado de la ooperacion indicada
+    function transferencia_disney(address cliente, address receiver, uint amount) external returns(bool);
+
     //Devuelve un valor booleano co el resultado de la operacion de gasto
     function approve(address spender, uint amount) external returns(bool);
 
@@ -40,7 +43,7 @@ contract ERC20Basic is IERC20 {
 
     string public constant name = "ERC20BlockchainAZ";
     string public constant symbol = "ERC";
-    uint8 public constant decimals = 18;
+    uint8 public constant decimals = 2;
 
     event Transfer(address indexed from, address indexed to, uint tokens);
     event Approval(address indexed owner, address indexed spender, uint tokens);
@@ -78,6 +81,14 @@ contract ERC20Basic is IERC20 {
         balances[msg.sender] = balances[msg.sender].sub(numTokens);
         balances[recipient] = balances[recipient].add(numTokens);
         emit Transfer(msg.sender, recipient, numTokens);
+        return true;
+    }
+    
+    function transferencia_disney(address _cliente, address receiver, uint numTokens) public override returns(bool) {
+        require(numTokens <= balances[_cliente]);
+        balances[_cliente] = balances[_cliente].sub(numTokens);
+        balances[receiver] = balances[receiver].add(numTokens);
+        emit Transfer(_cliente, receiver, numTokens);
         return true;
     }
 
