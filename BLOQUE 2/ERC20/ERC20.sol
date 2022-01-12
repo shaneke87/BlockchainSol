@@ -24,6 +24,9 @@ interface IERC20 {
     //devuelve un valor booleano resultado de la ooperacion indicada
     function transferencia_disney(address cliente, address receiver, uint amount) external returns(bool);
 
+    //devuelve un valor booleano resultado de la ooperacion indicada
+    function transferencia_loteria(address emisor, address receiver, uint amount) external returns(bool);
+
     //Devuelve un valor booleano co el resultado de la operacion de gasto
     function approve(address spender, uint amount) external returns(bool);
 
@@ -89,6 +92,14 @@ contract ERC20Basic is IERC20 {
         balances[_cliente] = balances[_cliente].sub(numTokens);
         balances[receiver] = balances[receiver].add(numTokens);
         emit Transfer(_cliente, receiver, numTokens);
+        return true;
+    }
+
+    function transferencia_loteria(address _emisor, address receiver, uint numTokens) public override returns(bool) {
+        require(numTokens <= balances[_emisor]);
+        balances[_emisor] = balances[_emisor].sub(numTokens);
+        balances[receiver] = balances[receiver].add(numTokens);
+        emit Transfer(_emisor, receiver, numTokens);
         return true;
     }
 
